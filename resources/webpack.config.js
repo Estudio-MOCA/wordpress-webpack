@@ -1,9 +1,9 @@
 const path = require('path');
 const isDevelopment = process.env.NODE_ENV === 'development';
 const themeAssetsPath = '../web/wp-content/themes/empty-theme/assets';
-const globImporter = require('node-sass-glob-importer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 var ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 module.exports = {
@@ -111,6 +111,10 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: `css/[name].css`
         }),
+        new CopyWebpackPlugin([
+            { from: 'src/img', to: './img' },
+            { from: 'src/font', to: './font' },
+        ]),
         new ImageminPlugin({
             test: /\.(jpe?g|png|gif)$/i,
             cacheFolder: './imgcache',
