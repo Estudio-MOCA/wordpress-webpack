@@ -26,6 +26,15 @@ add_filter('xmlrpc_methods', function ($methods) {
     unset($methods['pingback.ping']);
     return $methods;
 });
+// Unable plugins updates 
+function mc_filter_plugin_updates($value)
+{
+    //unset($value->response['woocommerce/woocommerce.php']);
+
+    return $value;
+}
+
+//add_filter('site_transient_update_plugins', 'mc_filter_plugin_updates');
 
 function mc_enqueue_style()
 {
@@ -39,3 +48,4 @@ function mc_enqueue_script()
 
 add_action('wp_enqueue_scripts', 'mc_enqueue_style');
 add_action('wp_enqueue_scripts', 'mc_enqueue_script');
+

@@ -13,3 +13,4 @@ RewriteRule . /wordpress-webpack/web/index.php [L]
 </IfModule>
 
 # END WordPress
+
