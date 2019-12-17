@@ -4,6 +4,8 @@ wp-config.php
 node_modules/
 material/
 resources/imgcache/
+error_log
+error_log.txt
 
 # ignore everything in the root except the "wp-content" directory.
 !wp-content/
