@@ -1,4 +1,7 @@
 import '../sass/style.scss';
+import EasterEgg from './easteregg'
+
+EasterEgg.init();
 
 // import 'bootstrap'
 // import 'bootstrap/js/dist/util';
