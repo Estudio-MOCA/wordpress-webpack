@@ -8,6 +8,6 @@ const init = () => {
         '     \\/     \\/                  \\/                 \\/            \\/     \\/  \\/     \\/      \n')
 };
 
-export {
+export default {
     init
 }
