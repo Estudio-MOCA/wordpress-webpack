@@ -49,3 +49,7 @@ function mc_enqueue_script()
 add_action('wp_enqueue_scripts', 'mc_enqueue_style');
 add_action('wp_enqueue_scripts', 'mc_enqueue_script');
 
+function mc_lower_wpseo_priority( $html ) {
+    return 'low';
+}
+add_filter( 'wpseo_metabox_prio', 'mc_lower_wpseo_priority' );
