@@ -1,61 +1,44 @@
 const path = require('path');
-const themeAssetsPath = '../web/wp-content/themes/empty-theme/assets';
+const themeAssetsPath = '../web/wp-content/themes/empty-theme/dist';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-var ImageminPlugin = require('imagemin-webpack-plugin').default;
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 module.exports = (env, options) => {
-    const isDevelopment = options.mode === 'development';
-
+    console.log('options', options);
+    const isDevelopment = options.mode === 'development' || options.mode === 'dev' || options.mode === 'watch';
+    console.log('isDevelopment', isDevelopment);
     return {
         entry: './src/js/app.js',
         output: {
             filename: 'js/app.js',
             path: path.resolve(__dirname, themeAssetsPath)
         },
-        devtool: isDevelopment ? 'inline-source-map' : '',
+        devtool: isDevelopment ? 'inline-source-map' : false,
         module: {
             rules: [
-                //js
-                {
-                    test: /\.js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    use: {
-                        loader: 'babel-loader',
-                    }
-                },
-                //css scss
                 {
                     test: /\.s?css$/,
                     use: [
                         MiniCssExtractPlugin.loader,
                         {
-                            loader: 'css-loader',
+                            loader: "css-loader",
                             options: {
-                                sourceMap: true,
+                                sourceMap: isDevelopment,
                             },
-                        },
-                        {
-                            loader: 'postcss-loader',
+                        }, {
+                            loader: "sass-loader",
                             options: {
-                                sourceMap: true,
+                                sourceMap: isDevelopment,
                             },
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: true,
-                                sassOptions: {
-                                    outputStyle: 'compressed',
-                                },
-                            },
-                        },
-                    ],
+                        },]
                 },
-                //imgs
                 {
-                    test: /\.(png|jpg|gif)$/,
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: ["babel-loader"]
+                },
+                {
+                    test: /\.(png|jpg|gif|jpeg)$/,
                     use: [
                         {
                             loader: 'file-loader',
@@ -67,7 +50,6 @@ module.exports = (env, options) => {
                         },
                     ]
                 },
-                //svg
                 {
                     test: /\.(svg)$/,
                     use: [
@@ -91,7 +73,6 @@ module.exports = (env, options) => {
                         },
                     ],
                 },
-                //fonts
                 {
                     test: /\.(woff(2)?|ttf|eot)$/,
                     use: [
@@ -105,24 +86,19 @@ module.exports = (env, options) => {
                         },
                     ],
                 }
-
             ]
         },
         plugins: [
-            require('autoprefixer'),
-            require('pixrem'),
-            require('cssnano'),
             new MiniCssExtractPlugin({
                 filename: `css/[name].css`
             }),
-            new CopyWebpackPlugin([
-                {from: 'src/img', to: './img'},
-                {from: 'src/fonts', to: './fonts'},
-            ]),
             new ImageminPlugin({
+                disable: isDevelopment, // Disable during development
                 test: /\.(jpe?g|png|gif)$/i,
-                cacheFolder: './imgcache',
+                pngquant: {
+                    quality: '95-100'
+                }
             })
-        ],
-    };
-}
+        ]
+    }
+};

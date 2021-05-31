@@ -38,12 +38,19 @@ function mc_filter_plugin_updates($value)
 
 function mc_enqueue_style()
 {
-    wp_enqueue_style('moca-template-css', get_template_directory_uri() . '/assets/css/main.css', false);
+    wp_enqueue_style('moca-template-css', get_template_directory_uri() . '/dist/css/main.css', false);
 }
 
 function mc_enqueue_script()
 {
-    wp_enqueue_script('moca-template-js', get_template_directory_uri() . '/assets/js/app.js', false);
+    wp_enqueue_script('moca-template-js', get_template_directory_uri() . '/dist/js/app.js', false);
+    wp_localize_script( 'moca-template-js', 'emWp',
+        array(
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'templateUrl' => get_template_directory_uri(),
+            'siteUrl' => get_bloginfo('url')
+        )
+    );
 }
 
 add_action('wp_enqueue_scripts', 'mc_enqueue_style');
